@@ -42,7 +42,7 @@ public:
     void printFloor();
     std::list<Coordinate*> remaining;
     void RemoveFromRemaining(Coordinate* c);
-
+    void bfs();
 };
 
 FloorMap::FloorMap(int row, int col, int battery)
@@ -79,6 +79,8 @@ void FloorMap::RemoveFromRemaining(Coordinate* c)
 {
     remaining.remove(c);
 }
+
+void
 
 class Robot
 {
@@ -142,6 +144,13 @@ void Robot::SpiralMove(FloorMap &f)
     }*/
 }
 
+bool Robot::NoBattery()
+{
+    if(curBattery == maxBattery/2)
+    {
+        MoveToTarget()
+    }
+}
 
 //push the coordinate to stepHistory
 void Robot::StepRecord()
@@ -153,7 +162,7 @@ int main()
 {
 
     int trow, tcol, battery;
-    ifstream inFile("test.txt");
+    ifstream inFile("floor3.data");
     ofstream outFile;
 
     inFile.is_open();
@@ -186,6 +195,24 @@ int main()
                     c.y = j;
                     r.currentPosition = c;
                     m.floor[i][j].state = charger;
+                }
+            }
+        }
+        while(m.remaining.size()>0)
+        {
+            if(r.NoBattery())
+            {
+                r.MoveToTarget(m.batteryStationCoordinate)
+            }
+            else
+            {
+                if(r.canMoveSpiral)
+                {
+                    r.SpiralMove();
+                }
+                else
+                {
+                    r.MoveToTarget()
                 }
             }
         }
