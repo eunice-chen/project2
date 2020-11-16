@@ -112,10 +112,10 @@ void Robot::SpiralMove(FloorMap &f)
         f.RemoveFromRemaining(&currentPosition);
     }
     //check currentPosition's upper cell's state
-    else if(f.floor[currentPosition.x+1][currentPosition.y].state == dirty)
+    else if(f.floor[currentPosition.x-1][currentPosition.y].state == dirty)
     {
-        f.floor[currentPosition.x+1][currentPosition.y].state == clean;  //claer
-        currentPosition.x = currentPosition.x+1;    //update new position
+        f.floor[currentPosition.x-1][currentPosition.y].state == clean;  //claer
+        currentPosition.x = currentPosition.x-1;    //update new position
         StepRecord(); //record step
         f.RemoveFromRemaining(&currentPosition);
     }
@@ -128,10 +128,10 @@ void Robot::SpiralMove(FloorMap &f)
         f.RemoveFromRemaining(&currentPosition);
     }
     //check currentPosition's bottom cell's state
-    else if(f.floor[currentPosition.x-1][currentPosition.y].state == dirty)
+    else if(f.floor[currentPosition.x+1][currentPosition.y].state == dirty)
     {
-        f.floor[currentPosition.x-1][currentPosition.y].state == clean;  //claer
-        currentPosition.x = currentPosition.x-1;    //update new position
+        f.floor[currentPosition.x+1][currentPosition.y].state == clean;  //claer
+        currentPosition.x = currentPosition.x+1;    //update new position
         StepRecord(); //record step
         f.RemoveFromRemaining(&currentPosition);
     }
@@ -148,8 +148,9 @@ bool Robot::NoBattery()
 {
     if(curBattery == maxBattery/2)
     {
-        MoveToTarget()
+        return true;
     }
+    return false;
 }
 
 //push the coordinate to stepHistory
@@ -198,7 +199,7 @@ int main()
                 }
             }
         }
-        while(m.remaining.size()>0)
+        /*while(m.remaining.size()>0)
         {
             if(r.NoBattery())
             {
@@ -215,7 +216,7 @@ int main()
                     r.MoveToTarget()
                 }
             }
-        }
+        }*/
         m.printFloor();
     return 0;
 }
